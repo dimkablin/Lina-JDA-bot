@@ -1,4 +1,4 @@
-package dimka.blin.Lina.adapters;
+package dimka.blin.Lina.utilities;
 
 import java.io.FileInputStream;
 import java.io.IOException;

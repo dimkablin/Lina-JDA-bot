@@ -1,6 +1,6 @@
-import dimka.blin.Lina.enums.Color;
+import dimka.blin.Lina.enums.TextColor;
 import dimka.blin.Lina.Lina;
-import dimka.blin.Lina.utils.SQLConnector;
+import dimka.blin.Lina.utilities.SQLConnector;
 import net.dv8tion.jda.api.OnlineStatus;
 
 import javax.security.auth.login.LoginException;
@@ -14,7 +14,7 @@ public class main {
     public static void main(String[] args) throws LoginException, SQLException {
         connector = new SQLConnector(botProperties);
         if (!connector.connectionToDB()) {
-            Color.YELLOW.print("Не удалось подключиться к базе данных!");
+            TextColor.YELLOW.print("Не удалось подключиться к базе данных!");
             System.exit(0);
         }
         Lina bot = new Lina(botProperties, gameName, OnlineStatus.ONLINE, connector);

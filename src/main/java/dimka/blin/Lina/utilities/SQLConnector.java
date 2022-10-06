@@ -1,8 +1,10 @@
-package dimka.blin.Lina.utils;
+package dimka.blin.Lina.utilities;
 
 import dimka.blin.Lina.enums.Color;
+import dimka.blin.Lina.enums.TextColor;
 import dimka.blin.Lina.enums.user_list;
-import dimka.blin.Lina.adapters.BotProperties;
+import dimka.blin.Lina.utilities.BotProperties;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 
@@ -34,7 +36,7 @@ public class SQLConnector {
         }
     }
 
-    public boolean addNewUser(String user_name, String user_id){
+    public static boolean addNewUser(String user_name, String user_id){
         try{
 
             preparedStatement = connection.prepareStatement("insert into users_list values (?, ?, 0, 0)");
@@ -42,7 +44,7 @@ public class SQLConnector {
             preparedStatement.setString(2, user_name);
             preparedStatement.executeUpdate();
 
-            Color.GREEN.print("User: \'" + user_name + "\' with user_id: \'" + user_id + "\' was inserted.");
+            TextColor.GREEN.print("User: \'" + user_name + "\' with user_id: \'" + user_id + "\' was inserted.");
             return true;
 
         } catch (Exception e){
@@ -51,40 +53,55 @@ public class SQLConnector {
         }
     }
 
-    public user_list updateUser(String user_name, String user_id){
-        try{
+    public static void deleteUser(String id){
+        try {
+            preparedStatement = connection.prepareStatement("DELETE FROM users_list WHERE user_id=" + "'" + id + "'");
+            preparedStatement.execute();
+        } catch (SQLException e ) {
+            e.printStackTrace();
+            TextColor.BLUE.print("Program is still working.");
+        }
+
+    }
+
+    public static user_list getUser(String user_id) {
+        if (!checkUser(user_id)) return null;
+        @NotNull
+        user_list user = null;
+
+        try {
             if (checkUser(user_id)) {
                 stmt = connection.createStatement();
-                resultSet = stmt.executeQuery("SELECT * FROM users_list WHERE user_id=" + user_id);
+                resultSet = stmt.executeQuery("SELECT * FROM users_list WHERE user_id=" + "'" + user_id + "'");
                 if (resultSet.next())
-                    return new user_list(resultSet.getString(1),
-                        resultSet.getString(2),
-                        resultSet.getInt(3),
-                        resultSet.getFloat(4));
-                return null;
+                    user = new user_list(resultSet.getString(1),
+                            resultSet.getString(2),
+                            resultSet.getInt(3),
+                            resultSet.getFloat(4));
             }
-                //
-            else
-                addNewUser(user_name, user_id);
-            return new user_list(user_id, user_name, null, null);
-
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            TextColor.BLUE.print("Program is still working.");
         }
+        return user;
     }
 
     public static boolean checkUser(String user_id){
         try{
+            ResultSet rs;
             stmt = connection.createStatement();
-            stmt.execute("SELECT * FROM USERS_LIST WHERE USER_ID= " + user_id);
-            return true;
+            rs = stmt.executeQuery("SELECT * FROM USERS_LIST WHERE USER_ID= " + "'"+ user_id + "'");
+            if(rs.next())
+                return true;
+            return false;
         } catch (Exception e){
+            e.printStackTrace();
+            TextColor.BLUE.print("Program is still working.");
             return false;
         }
     }
 
-    public static boolean rateUser(String user_id, Integer tempRate){
+    public static boolean addRate(String user_id, Integer tempRate){
         try{
             preparedStatement = connection.prepareStatement("UPDATE USERS_LIST SET RATE = RATE + 1 WHERE USER_ID=" + user_id);
             return true;

@@ -33,6 +33,11 @@
             <artifactId>postgresql</artifactId>
             <version>42.4.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.scilab.forge</groupId>
+            <artifactId>jlatexmath-ignore</artifactId>
+            <version>1.0.7</version>
+        </dependency>
     </dependencies>
 
 </project>
