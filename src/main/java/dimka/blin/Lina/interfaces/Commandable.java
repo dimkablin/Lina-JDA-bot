@@ -1,16 +1,22 @@
 package dimka.blin.Lina.interfaces;
 
-import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.util.LinkedList;
 
 public abstract class Commandable {
-    private String nameOfCommand;
 
-    public abstract void execute(Event event);
+    /**
+     * Execute command and return message
+     * @param event
+     * @return
+     */
+    public abstract EmbedBuilder execute(MessageReceivedEvent event);
 
-    @Override
-    public String toString() {
-        return nameOfCommand;
-    }
+    /**
+     * Return name of command that used to keep command in the map
+     * @return
+     */
+    public abstract String getNameOfCommand();
+
 }
