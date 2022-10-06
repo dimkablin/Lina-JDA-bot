@@ -39,7 +39,7 @@ public class SQLConnector {
     public static boolean addNewUser(String user_name, String user_id){
         try{
 
-            preparedStatement = connection.prepareStatement("insert into users_list values (?, ?, 0, 0)");
+            preparedStatement = connection.prepareStatement("insert into users_list values (?, ?, 0, 1, 0)");
             preparedStatement.setString(1, user_id);
             preparedStatement.setString(2, user_name);
             preparedStatement.executeUpdate();
@@ -48,7 +48,7 @@ public class SQLConnector {
             return true;
 
         } catch (Exception e){
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
@@ -77,7 +77,8 @@ public class SQLConnector {
                     user = new user_list(resultSet.getString(1),
                             resultSet.getString(2),
                             resultSet.getInt(3),
-                            resultSet.getFloat(4));
+                            resultSet.getInt(4),
+                            resultSet.getDouble(5));
             }
         } catch (Exception e) {
             e.printStackTrace();

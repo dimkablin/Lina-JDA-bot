@@ -23,7 +23,7 @@ public class showMe extends Commandable {
         msg.appendDescription("User: "+ user.user_name +
                 "\nID: " + user.user_id +
                 "\nRate: " + user.rate +
-                "\nYour level is: " + Integer.highestOneBit(user.rate))
+                "\nYour level is: " + user.level)
                 .setColor(Color.INFO_COLOR);
         return msg;
     }
@@ -35,6 +35,6 @@ public class showMe extends Commandable {
 
     @Override
     public String toString(){
-        return "Returning user's information by ID.";
+        return "returning user's information by ID.";
     }
 }

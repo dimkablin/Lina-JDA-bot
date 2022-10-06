@@ -13,13 +13,15 @@ public class signin extends Commandable {
     public EmbedBuilder execute(MessageReceivedEvent event) {
         EmbedBuilder answer = new EmbedBuilder();
         String[] message = event.getMessage().getContentRaw().replace("\n", "").split(" ");
-        if (message.length > 1) {
-            SQLConnector.addNewUser(event.getMessage().getContentRaw().replace("\\signin ", ""),
-                    event.getAuthor().getId());
-        } else {
-            SQLConnector.addNewUser(event.getAuthor().getName(), event.getAuthor().getId());
-        }
+        String nameOfUser = (message.length > 1) ?
+                event.getMessage().getContentRaw().replace("\\signin ", "") :
+                event.getAuthor().getName();
 
+        // if the DB have user already
+        if (!SQLConnector.addNewUser(nameOfUser, event.getAuthor().getId())) {
+            return answer.setColor(Color.INFO_COLOR)
+                    .appendDescription("You had been added to the database already.");
+        }
         return answer.setColor(Color.RIGHT_COLOR)
                 .appendDescription("You have been added to the database.");
     }
@@ -27,5 +29,10 @@ public class signin extends Commandable {
     @Override
     public String getNameOfCommand() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "creating an account.";
     }
 }

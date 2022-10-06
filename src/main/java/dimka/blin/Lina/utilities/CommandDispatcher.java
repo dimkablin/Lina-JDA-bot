@@ -1,5 +1,7 @@
 package dimka.blin.Lina.utilities;
 
+import dimka.blin.Lina.enums.Color;
+import dimka.blin.Lina.enums.TextColor;
 import dimka.blin.Lina.interfaces.CommandDispatcherable;
 import dimka.blin.Lina.interfaces.Commandable;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -20,11 +22,14 @@ public class CommandDispatcher implements CommandDispatcherable<Map<String, Comm
         try {
             // TODO: handling commands
             String message = event.getMessage().getContentRaw();
-            return mapOfCommands.get(message.split(" ")[0].replace("\\", "")).execute(event);
+            Commandable command = mapOfCommands.get(message.split(" ")[0].replace("\\", ""));
+            addToHistory(command);
+            return command.execute(event);
         } catch (Exception e) {
             e.printStackTrace();
+            EmbedBuilder answer = new EmbedBuilder();
+            return answer.setColor(Color.WRONG_COLOR).appendDescription("Cannot find any such command.");
         }
-        return null;
     }
 
     @Override
@@ -34,8 +39,11 @@ public class CommandDispatcher implements CommandDispatcherable<Map<String, Comm
         }
     }
 
-    @Override
-    public Map<String, Commandable> getCommandList() {
+    /**
+     * getting all command list
+     * @return
+     */
+    public static Map<String, Commandable> getCommands() {
         return mapOfCommands;
     }
 

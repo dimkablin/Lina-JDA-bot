@@ -12,11 +12,6 @@ public interface CommandDispatcherable<T> {
      */
     public void addCommands(Commandable... commands);
 
-    /**
-     * getting all command list
-     * @return
-     */
-    public T getCommandList();
 
     /**
      * Gets 5 last names of command, in other words - history

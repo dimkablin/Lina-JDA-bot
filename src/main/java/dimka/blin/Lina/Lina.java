@@ -1,15 +1,13 @@
 package dimka.blin.Lina;
 
-import dimka.blin.Lina.commands.deleteMe;
-import dimka.blin.Lina.commands.showMe;
-import dimka.blin.Lina.commands.signin;
-import dimka.blin.Lina.commands.update;
+import dimka.blin.LaTeXexpr.GeneratorLatex;
+import dimka.blin.LaTeXexpr.expressions.*;
+import dimka.blin.Lina.commands.*;
 import dimka.blin.Lina.interfaces.CommandDispatcherable;
 import dimka.blin.Lina.interfaces.Commandable;
 import dimka.blin.Lina.utilities.Adapter;
 import dimka.blin.Lina.utilities.BotProperties;
 import dimka.blin.Lina.utilities.CommandDispatcher;
-import dimka.blin.Lina.utilities.MessageLog;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -22,9 +20,10 @@ import java.util.Map;
 
 public class Lina {
     private JDA bot;
-    private BotProperties BP;
+    private static BotProperties BP;
     public static SQLConnector connector;
     private CommandDispatcherable<Map<String, Commandable>> commandDispatcher = new CommandDispatcher();
+    private static GeneratorLatex generatorLatex = new GeneratorLatex();
 
 
     public Lina(String botPropertiesURL, String gameName, OnlineStatus status, SQLConnector connector) throws LoginException, SQLException {
@@ -33,13 +32,16 @@ public class Lina {
 
         try{
             // ADDING COMMANDS HERE
-            commandDispatcher.addCommands(new update(), new showMe(), new deleteMe(), new signin());
+            commandDispatcher.addCommands(new update(), new showMe(), new deleteMe(), new signin(),
+                    new latex(), new help(), new randexpr());
+            generatorLatex.addExpressions(new addtion(), new division(), new multiplication(), new power(),
+                    new subtraction(), new root());
 
             this.bot = JDABuilder.createDefault(BP.getToken()).
                     setActivity(Activity.playing(gameName)).
                     setStatus(status).
                     setAutoReconnect(true).
-                    addEventListeners(new MessageLog(this), // Logging messages from the server
+                    addEventListeners( // new MessageLog(this), // Logging messages from the server
                             new Adapter(this)).             // handle messages
                     build();
 
@@ -48,7 +50,7 @@ public class Lina {
         }
     }
 
-    public BotProperties getBP() {
+    public static BotProperties getBP() {
         return BP;
     }
 
@@ -58,6 +60,10 @@ public class Lina {
 
     public SQLConnector getConnector() {
         return connector;
+    }
+
+    public static GeneratorLatex getGeneratorLatex() {
+        return generatorLatex;
     }
 
 }

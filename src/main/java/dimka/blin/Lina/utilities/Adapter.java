@@ -1,5 +1,6 @@
 package dimka.blin.Lina.utilities;
 
+import dimka.blin.Lina.enums.TextColor;
 import dimka.blin.Lina.enums.user_list;
 import dimka.blin.Lina.Lina;
 import dimka.blin.Lina.interfaces.*;
@@ -35,15 +36,15 @@ public class Adapter extends ListenerAdapter{
         // if message is not command then handle it out
         if (event.getMessage().getContentRaw().startsWith("\\")) {
             EmbedBuilder returningMessage = bot.getCommandDispatcher().handle(event);
-            if (returningMessage == null) {
-                returningMessage = new EmbedBuilder();
-                returningMessage.appendDescription("something went wrong.")
-                        .setColor(dimka.blin.Lina.enums.Color.WRONG_COLOR);
+            try {
+                // send answer
+                event.getJDA().getGuildById(this.bot.getBP().getServerID()).
+                        getTextChannelById(event.getChannel().getId()).
+                        sendMessageEmbeds(returningMessage.build()).queue();
+            } catch (NullPointerException e) {
+                TextColor.PURPLE.print("Commandable returned null.");
             }
-            // send answer
-            event.getJDA().getGuildById(this.bot.getBP().getServerID()).
-                    getTextChannelById(event.getChannel().getId()).
-                    sendMessageEmbeds(returningMessage.build()).queue();
+
         }
     }
 

@@ -1,4 +1,4 @@
-package dimka.blin.Lina.utilities;
+package dimka.blin.LaTeXexpr;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -52,17 +52,17 @@ public class LaTeXConverter
     {
         TeXFormula formula = new TeXFormula(latexString);
 
-        TeXIcon icon = formula.new TeXIconBuilder().setStyle(TeXConstants.STYLE_DISPLAY).setSize(20).build();
+        TeXIcon icon = formula.new TeXIconBuilder().setStyle(TeXConstants.STYLE_DISPLAY).setSize(25).build();
         icon.setInsets(new Insets(5, 5, 5, 5));
 
         BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2 = image.createGraphics();
-        g2.setColor(Color.white);
+        g2.setColor(new Color(54, 57, 63));
         g2.fillRect(0,0,icon.getIconWidth(),icon.getIconHeight());
 
         JLabel jl = new JLabel();
-        jl.setForeground(new Color(0, 0, 0));
+        jl.setForeground(new Color(255, 255, 255));
         icon.paintIcon(jl, g2, 0, 0);
 
         ImageIO.write(image, "png", imageFile.getAbsoluteFile());

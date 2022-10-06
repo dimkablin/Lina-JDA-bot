@@ -17,6 +17,6 @@ public class update extends Commandable {
 
     @Override
     public String toString() {
-        return "Update user in database.";
+        return "update user in database.";
     }
 }

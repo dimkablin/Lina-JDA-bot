@@ -34,6 +34,6 @@ public class deleteMe extends Commandable {
 
     @Override
     public String toString() {
-        return "Deleting user from DB.";
+        return "deleting user from DB.";
     }
 }
