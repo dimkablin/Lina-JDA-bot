@@ -16,7 +16,7 @@ public class division extends Expressionable {
     }
 
     @Override
-    public String getName() {
+    public String getLatex() {
         return name;
     }
 }

@@ -1,6 +1,5 @@
 package dimka.blin.LaTeXexpr;
 
-import javax.crypto.MacSpi;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -13,36 +12,57 @@ public class GeneratorLatex {
      * @param level
      * @return
      */
-    public static String get(Integer level) {
-        StringBuilder latex = new StringBuilder("\\displaystyle").append(randomChoose(level));
-        Integer index;
+    public static StringExpression get(Integer level) {
+        Expressionable randomChoose = randomChoose(level);
+        Boolean randomBoolean;
+        String randomInteger;
+
+        StringBuilder latex = new StringBuilder("\\displaystyle").append(randomChoose.getLatex());
+        StringBuilder expression = new StringBuilder().append(randomChoose.getExpression());
+
+        Integer indexLatex;
+        Integer indexExpression;
+        // Create formula
         for (int i = 0; i < changedNumber(level); i++) {
-                index = randomBoolean() ? latex.indexOf("x") : latex.lastIndexOf("x");
-                latex.replace(index, index + 1, randomChoose(level));
+            randomChoose = randomChoose(level);
+            randomBoolean = randomBoolean();
+
+            indexLatex = randomBoolean ? latex.indexOf("x") : latex.lastIndexOf("x");
+            indexExpression = randomBoolean ? expression.indexOf("x") : expression.lastIndexOf("x");
+
+            latex.replace(indexLatex, indexLatex + 1, randomChoose.getLatex());
+            expression.replace(indexExpression, indexExpression + 1, randomChoose.getExpression());
+
+
+        }
+        // Fill formula with numbers that dependent on level
+        while ((indexLatex = latex.indexOf("x")) != -1 & (indexExpression = expression.indexOf("x")) != -1) {
+            randomInteger = randomInteger(level).toString();
+            latex.replace(indexLatex, indexLatex + 1,  randomInteger);
+            expression.replace(indexExpression, indexExpression + 1, randomInteger);
         }
 
-        while ((index = latex.indexOf("x")) != -1) {
-            latex.replace(index, index + 1,  randomInteger(level).toString());
-        }
-        // TODO: determine expression from the pool
-        return latex.toString();
+        return new StringExpression(latex.toString(), expression.toString());
     }
 
     public void addExpressions(Expressionable... expressions) {
         for (Expressionable expression : expressions) {
-            pool.put(expression.getName(), expression);
+            pool.put(expression.getLatex(), expression);
         }
     }
 
-    private static String randomChoose(Integer level) {
+    private static Expressionable randomChoose(Integer level) {
         /** random expression from keys of the pool
          * @return String - expression from the pool
          */
         Expressionable expression;
         do {
-            expression = pool.get(pool.keySet().toArray()[ (int) Math.round(Math.random()*(pool.size() - 1)) ]);
+            expression = pool.get(
+                    pool.keySet().toArray()[                              // take from the pool
+                    (int) Math.round(Math.random()*(pool.size() - 1)) ]); // randomly object
         } while (level < expression.getLevel());
-        return expression.getName();
+
+        return expression;
     }
 
     private static boolean randomBoolean() {
@@ -69,7 +89,7 @@ public class GeneratorLatex {
     }
 
     public static String toExpression(String latex) {
-
+        String expr = latex;
         return null;
     }
 

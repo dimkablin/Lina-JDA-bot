@@ -17,7 +17,7 @@ public class root extends Expressionable {
     }
 
     @Override
-    public String getName() {
+    public String getLatex() {
         return name;
     }
 }

@@ -17,7 +17,7 @@ public class multiplication extends Expressionable {
     }
 
     @Override
-    public String getName() {
+    public String getLatex() {
         return name;
     }
 }

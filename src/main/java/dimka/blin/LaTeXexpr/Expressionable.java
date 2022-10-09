@@ -15,6 +15,6 @@ public abstract class Expressionable {
      * Getting name of expression
      * @return String
      */
-    public abstract String getName();
+    public abstract String getLatex();
     public abstract Integer getLevel();
 }

@@ -21,7 +21,7 @@ public class showMe extends Commandable {
         }
 
         msg.appendDescription("User: "+ user.user_name +
-                "\nID: " + user.user_id +
+                //"\nID: " + user.user_id +
                 "\nRate: " + user.rate +
                 "\nYour level is: " + user.level)
                 .setColor(Color.INFO_COLOR);

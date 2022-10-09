@@ -9,6 +9,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 
+import dimka.blin.Lina.enums.TextColor;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
