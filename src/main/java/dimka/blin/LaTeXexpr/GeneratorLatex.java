@@ -14,7 +14,7 @@ public class GeneratorLatex {
      * @return
      */
     public static String get(Integer level) {
-        StringBuilder latex = new StringBuilder(randomChoose(level));
+        StringBuilder latex = new StringBuilder("\\displaystyle").append(randomChoose(level));
         Integer index;
         for (int i = 0; i < changedNumber(level); i++) {
                 index = randomBoolean() ? latex.indexOf("x") : latex.lastIndexOf("x");
@@ -22,7 +22,7 @@ public class GeneratorLatex {
         }
 
         while ((index = latex.indexOf("x")) != -1) {
-            latex.replace(index, index + 1, randomInteger(level).toString());
+            latex.replace(index, index + 1,  randomInteger(level).toString());
         }
         // TODO: determine expression from the pool
         return latex.toString();
@@ -58,14 +58,19 @@ public class GeneratorLatex {
          * random number that used to final formula
          * @return Integer - a random number [from 1 to changedNumber() + 1]
          */
-        return (int) (Math.random() * changedNumber(level)) + 1;
+        return (int) (Math.random() * changedNumber(level) * 10) + 1;
     }
 
     private static Integer changedNumber(Integer level) {
         /**
-         * @return Integer - a number from 0 to {level}^0.8
+         * @return Integer - a number from 0 to {level}^0.5
          */
-        return (int) Math.pow(level, 0.8) ;
+        return (int) Math.pow(level, 0.5) ;
+    }
+
+    public static String toExpression(String latex) {
+
+        return null;
     }
 
 }
