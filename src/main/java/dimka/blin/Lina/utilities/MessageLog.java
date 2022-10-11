@@ -41,6 +41,7 @@ public class MessageLog extends ListenerAdapter {
             return;
         }
 
+        /*
 
         // create empty message
         EmbedBuilder log = new EmbedBuilder();
@@ -55,13 +56,15 @@ public class MessageLog extends ListenerAdapter {
                 getTextChannelById(this.bot.getBP().getLogChannelID()).
                 sendMessageEmbeds(log.build()).queue();
 
+         */
+
+
         // Print incoming message
         TextColor.BLUE.print(logToConsole
                 .append("\n\tChannel: ").append(channelId)
                 .append("\n\tMember: ").append(member)
                 .append("\n\tMessage: ").append(message)
                 .toString());
-        log.clear();
     }
 
 }

@@ -1,6 +1,8 @@
 package dimka.blin.Lina.interfaces;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.LinkedList;
@@ -32,5 +34,10 @@ public interface CommandDispatcherable<T> {
      *
      * @param event
      */
-    public EmbedBuilder handle(MessageReceivedEvent event);
+    public EmbedBuilder handle(SlashCommandInteractionEvent event);
+
+    /**
+     *
+     */
+    public void addCommandsToGuild(JDA jda);
 }

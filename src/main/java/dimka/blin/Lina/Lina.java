@@ -5,14 +5,12 @@ import dimka.blin.LaTeXexpr.expressions.*;
 import dimka.blin.Lina.commands.*;
 import dimka.blin.Lina.interfaces.CommandDispatcherable;
 import dimka.blin.Lina.interfaces.Commandable;
-import dimka.blin.Lina.utilities.Adapter;
-import dimka.blin.Lina.utilities.BotProperties;
-import dimka.blin.Lina.utilities.CommandDispatcher;
+import dimka.blin.Lina.utilities.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import dimka.blin.Lina.utilities.SQLConnector;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 import javax.security.auth.login.LoginException;
 import java.sql.SQLException;
@@ -33,17 +31,20 @@ public class Lina {
         try{
             // ADDING COMMANDS HERE
             commandDispatcher.addCommands(new update(), new showMe(), new deleteMe(), new signin(),
-                    new latex(), new help(), new randexpr());
+                    new latex(), new help(), new play());
             generatorLatex.addExpressions(new addtion(), new division(), new multiplication(), new power(),
                     new subtraction(), new root());
 
             this.bot = JDABuilder.createDefault(BP.getToken()).
                     setActivity(Activity.playing(gameName)).
                     setStatus(status).
-                    setAutoReconnect(true).
-                    addEventListeners( // new MessageLog(this), // Logging messages from the server
-                            new Adapter(this)).             // handle messages
-                    build();
+                    setAutoReconnect(true).build();
+
+            this.bot.addEventListener( new MessageLog(this), // Logging messages from the server
+                            new Adapter(this));            // handle message
+
+            // Adding commands to the bot
+            this.commandDispatcher.addCommandsToGuild(this.bot);
 
         } catch (LoginException e){
             System.out.println("Incorrect token");

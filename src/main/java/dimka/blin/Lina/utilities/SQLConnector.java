@@ -39,9 +39,10 @@ public class SQLConnector {
     public static boolean addNewUser(String user_name, String user_id){
         try{
 
-            preparedStatement = connection.prepareStatement("insert into users_list values (?, ?, 0, 1, 0)");
+            preparedStatement = connection.prepareStatement("insert into users_list values (?, ?, 0, 1, ?)");
             preparedStatement.setString(1, user_id);
             preparedStatement.setString(2, user_name);
+            preparedStatement.setDouble(3, Double.MIN_VALUE);
             preparedStatement.executeUpdate();
 
             TextColor.GREEN.print("User: \'" + user_name + "\' with user_id: \'" + user_id + "\' was inserted.");
@@ -105,6 +106,17 @@ public class SQLConnector {
     public static boolean addRate(String user_id, Integer tempRate){
         try{
             preparedStatement = connection.prepareStatement("UPDATE USERS_LIST SET RATE = RATE + 1 WHERE USER_ID=" + user_id);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean setLastAnswer(String user_id, Double last_answer){
+        try{
+            preparedStatement = connection.prepareStatement("UPDATE USERS_LIST SET ANSWER=" + last_answer + " WHERE USER_ID=" + "'"+ user_id + "'");
+            preparedStatement.execute();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

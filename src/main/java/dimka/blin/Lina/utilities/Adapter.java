@@ -6,9 +6,11 @@ import dimka.blin.Lina.Lina;
 import dimka.blin.Lina.interfaces.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.LinkedList;
 
@@ -30,27 +32,34 @@ public class Adapter extends ListenerAdapter{
 
     @Override
     public void onMessageReceived(final MessageReceivedEvent event){
-        //if (!event.getChannel().getId().equals(this.bot.getBP().getMathForBabiesID())) return;
-        if (event.getAuthor().isBot()) return;
+        // TODO: nothing
+    }
+
+    @Override
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+        Double answer;
 
         // if message is not command then handle it out
-        if (event.getMessage().getContentRaw().startsWith("\\")) {
-            EmbedBuilder returningMessage = bot.getCommandDispatcher().handle(event);
-            try {
-                // send answer
-                event.getJDA().getGuildById(this.bot.getBP().getServerID()).
-                        getTextChannelById(event.getChannel().getId()).
-                        sendMessageEmbeds(returningMessage.build()).queue();
-            } catch (NullPointerException e) {
-                TextColor.PURPLE.print("Commandable returned null.");
-            }
-
+        EmbedBuilder returningMessage = bot.getCommandDispatcher().handle(event);
+        try {
+            // send answer
+            event.getChannel().sendMessageEmbeds(returningMessage.build()).queue();
+        } catch (NullPointerException e) {
+            TextColor.PURPLE.print("Commandable returned null.");
         }
     }
 
 
     public LinkedList<Commandable> getHistory() {
         return this.history;
+    }
+
+    public static Double isDouble(String line) {
+        try {
+            return Double.valueOf(line);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
 

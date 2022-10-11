@@ -5,6 +5,8 @@ import dimka.blin.Lina.enums.TextColor;
 import dimka.blin.Lina.interfaces.CommandDispatcherable;
 import dimka.blin.Lina.interfaces.Commandable;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.LinkedList;
@@ -18,15 +20,13 @@ public class CommandDispatcher implements CommandDispatcherable<Map<String, Comm
     /**
      * Handle the current command out
      */
-    public EmbedBuilder handle(MessageReceivedEvent event) {
+    public EmbedBuilder handle(SlashCommandInteractionEvent event) {
         try {
-            // TODO: handling commands
-            String message = event.getMessage().getContentRaw();
-            Commandable command = mapOfCommands.get(message.split(" ")[0].replace("\\", ""));
+            Commandable command = mapOfCommands.get(event.getName());
             addToHistory(command);
             return command.execute(event);
         } catch (Exception e) {
-            e.printStackTrace();
+            TextColor.RED.print(e.getMessage());
             EmbedBuilder answer = new EmbedBuilder();
             return answer.setColor(Color.WRONG_COLOR).appendDescription("Cannot find any such command.");
         }
@@ -43,7 +43,7 @@ public class CommandDispatcher implements CommandDispatcherable<Map<String, Comm
      * getting all command list
      * @return
      */
-    public static Map<String, Commandable> getCommands() {
+    public static Map<String, Commandable> getMapOfCommands() {
         return mapOfCommands;
     }
 
@@ -57,5 +57,16 @@ public class CommandDispatcher implements CommandDispatcherable<Map<String, Comm
         this.getHistory().addFirst(command);
         if (this.getHistory().size() > 5)
             this.getHistory().removeLast();
+    }
+
+    public static void sendMessage( MessageReceivedEvent event, EmbedBuilder embedBuilder ) {
+        event.getJDA().getGuildById(event.getGuild().getId())
+                .getTextChannelById(event.getChannel().getId())
+                .sendMessageEmbeds(embedBuilder.build()).queue();
+    }
+
+    public void addCommandsToGuild(JDA jda) {
+        getMapOfCommands().entrySet().stream().forEach(x ->
+                jda.upsertCommand(x.getKey(), x.getValue().toString()).queue());
     }
 }

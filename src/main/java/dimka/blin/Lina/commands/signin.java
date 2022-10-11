@@ -14,7 +14,7 @@ public class signin extends Commandable {
         EmbedBuilder answer = new EmbedBuilder();
         String[] message = event.getMessage().getContentRaw().replace("\n", "").split(" ");
         String nameOfUser = (message.length > 1) ?
-                event.getMessage().getContentRaw().replace("\\signin ", "") :
+                event.getMessage().getContentRaw().replace("/signin ", "") :
                 event.getAuthor().getName();
 
         // if the DB have user already

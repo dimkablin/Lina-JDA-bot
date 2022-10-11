@@ -14,7 +14,7 @@ public class help extends Commandable {
     public EmbedBuilder execute(MessageReceivedEvent event) {
         EmbedBuilder answer = new EmbedBuilder();
         StringBuilder line = new StringBuilder();
-        for (Map.Entry<String, Commandable> entry : CommandDispatcher.getCommands().entrySet()) {
+        for (Map.Entry<String, Commandable> entry : CommandDispatcher.getMapOfCommands().entrySet()) {
             String key = entry.getKey();
             Commandable value = entry.getValue();
 
